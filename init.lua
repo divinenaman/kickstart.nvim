@@ -165,7 +165,14 @@ require('lazy').setup({
         -- style = 'darker',
         transparent = true,
       }
-      require('onedark').load()
+
+      -- mac doesn't have load functon ?
+      -- Try loading the colorscheme, catch errors if it fails
+      local load_status, load_error = pcall(require('onedark').load)
+      if not load_status then
+        print("Error loading onedark: " .. load_error)
+        return
+      end
     end,
   },
 
@@ -553,7 +560,6 @@ mason.setup {
 --  If you want to override the default filetypes that your language server will attach to you can
 --  define the property 'filetypes' to the map in question.
 local servers = {
-  -- gopls = {},
   pyright = {
     python = {
       analysis = {
@@ -565,7 +571,7 @@ local servers = {
   gopls = {},
   purescriptls = {},
 
-  -- rust_analyzer = {},
+  rust_analyzer = {},
   tsserver = {},
   eslint = {},
   html = { filetypes = { 'html', 'twig', 'hbs' } },
